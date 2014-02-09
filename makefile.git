@@ -1,0 +1,21 @@
+cs:
+
+config:
+	git config -l
+
+count:
+	ls -al | grep "RunXML.in"   | wc -l
+	ls -al | grep "RunXML.out"  | wc -l
+	ls -al | grep "TestXML.py"  | wc -l
+	ls -al | grep "TestXML.out" | wc -l
+
+log:
+	git log
+
+pull:
+	git pull
+
+status:
+	git branch
+	git remote
+	git status
