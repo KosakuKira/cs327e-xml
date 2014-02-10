@@ -15,168 +15,155 @@ print()
 x = fromstring(s)
 assert(type(x) is Element)
 
+evenNum = 0
+patterns = []
 for child in x:
     print(child.tag)
+    evenNum += 1
+    if ((evenNum % 2) == 0):
+        patterns.append(child)
 
-print (x.findall('THU'))
-print (x.tag)
-print (x.iter())
-print (x.findall("./red"))
-print (x.findall("./THU/Team/Cooly"))
+print (patterns)
+print (patterns[0].tag)
+
+curPattern = []
+curPattern.append(patterns[0])
+for child in patterns[0]:
+    print (child.tag)
+    curPattern.append(child)
+
+print (curPattern)
+
+occurs = 0
+hits = 0
+
+check1 = curPattern[0].tag
+check2 = curPattern[1].tag
+
+def traverse (a, occurs, d = "") :
+    print(d + a.tag)
+    hits = 0
+    if (a.tag == check1):
+        hits += 1
+    #elif (a.tag == check2):
+        #hits += 1
+
+    if hits == 1:
+        occurs += 1
+    for v in a:
+        if (v.tag == check1):
+            hits += 1
+        #elif (a.tag == check2):
+            #hits += 1
+
+        if hits == 1:
+            occurs += 1
+        traverse(v, occurs, d + "\t")
+    print(d + "/" + a.tag)
+
+
+traverse(x, occurs)
+
+#for child in x:
+
+    #b = ""
+
+    #Remains of old algorithm below
+    #Algorithm was naive and unsuccessful
+
+    #if(child.tag is not curPattern[0].tag):
+     #   print(child.tag)
+      #  print(curPattern[0].tag)
+       # print("Something A")
+        #print()
+
+    #print(child.tag)
+    #print("This is child: " + str(child.tag))
+    # print(child.find(curPattern[0].tag))
+    #if (child.find(curPattern[0].tag) is None):
+     #   print(child.tag)
+      #  print(curPattern[0].tag)
+        #print(child.find(curPattern[0].tag))
+       # print("Something B")
+        #print()
+
+
+
+    #print ("Birde: " + str(child.find(curPattern[0].tag)))
+    #if (child.tag is not curPattern[0].tag) and (child.find(curPattern[0].tag) is None):
+     #   print(child.find(curPattern[0].tag))
+      #  print("Doge")
+       # b = 1
+        # Junk code.
+        # First tag in pattern is obviously not here.
+    #else:
+     #   a = 2
+      #  newChild = child.find(curPattern[0].tag)
+       # newCheck = newChild.find(curPattern[1].tag)
+        #if (newCheck is None):
+         #   print("Such plot")
+          #  c = 3
+            # More junk code.
+            # Pattern doesn't exist.
+        #else:
+         #   print("Comic sans")
+          #  occurs += 1
+           # print("Reached this occurrence")
+
+    #print("End of loop")
+
+print()
+print("The Grand finale!")
+print("Count: " + str(occurs))
+
+
+
+# Below was making a list of the tags in x.iter
+# Whenever the tag appeared, regardless of nesting
+# It would print it
+#for blah in x.iter('Cooly'):
+    #print (blah.tag)
+
+# Testing the findall methods
+#print()
+#print (x.findall('THU'))
+#print (x.findall('Team'))
+#print()
+
+
+#thu = x.findall('THU') # Outer THU tag. Still element.
+#team = thu[0].findall('Team') # Found 'Team' tag within THU. Still an element.
+
+#print(thu[0].findall('Hrrnn')) # No 'Hrrnn' tags within THU.
+#teamChild1 = team[0].find('Hoenn') # No 'Hoenn' tags within Team
+#teamChild2 = team[0].find('Cooly') # Found 1 Cooly tag within Team
+
+
+
+#print(teamChild1)
+#print(teamChild2)
+#print()
+
+
+
+#print(thu)
+#print(team)
+#print()
+#print (x.tag)
+#print (x.iter())
+#print (x.findall("./red"))
+#print (x.findall("./THU/Team/Cooly"))
 someList = x.findall("./Team/Cooly")
+
+findTerm = "./"
+# Will be used for a much more flexible find
+# Find to be used for generating the first number in the output
+# i.e. the number of occurrences.
+
+print (someList)
 print (len(someList))
 #xRoot = x.getroot()
 
 #print (xRoot)
 #print (xRoot.toString())
 
-
-
-
-"""
-ElementTree.py
-
-<xml><THU>
-	<Team>
-		<ACRush></ACRush>
-		<Jelly></Jelly>
-		<Cooly></Cooly>
-	</Team>
-	<JiaJia>
-		<Team>
-			<Ahyangyi></Ahyangyi>
-			<Dragon></Dragon>
-			<Cooly><Amber></Amber></Cooly>
-		</Team>
-	</JiaJia>
-</THU>
-<Team><Cooly></Cooly></Team>
-
-<THU><Team><ACRush></ACRush><Jelly></Jelly><Cooly></Cooly></Team><JiaJia><Team><Ahyangyi></Ahyangyi><Dragon></Dragon><Cooly><Amber></Amber></Cooly></Team></JiaJia></THU>
-<Team><Cooly></Cooly></Team>
-
-<THU><Team><ACRush></ACRush><Jelly></Jelly><Cooly></Cooly></Team><JiaJia><Team><Ahyangyi></Ahyangyi><Dragon></Dragon><Cooly><Amber></Amber></Cooly></Team></JiaJia></THU><Team><Cooly></Cooly></Team>
-
-<red>
-    <green>
-        <blue></blue>
-        <yellow></yellow>
-    </green>
-</red>
-<red><green></green></red>
-
-<red>
-    <green>
-        <blue></blue>
-        <yellow></yellow>
-    </green>
-</red>
-<red><blue></blue></red>
-
-<red>
-    <green>
-        <blue></blue>
-        <yellow></yellow>
-    </green>
-</red>
-<red><yellow></yellow></red>
-
-<red>
-    <green>
-        <blue></blue>
-        <yellow></yellow>
-    </green>
-</red>
-<green><blue></blue></green>
-
-<red>
-    <green>
-        <blue></blue>
-        <yellow></yellow>
-    </green>
-</red>
-<green><yellow></yellow></green>
-
-<red>
-    <green>
-        <blue></blue>
-        <yellow></yellow>
-    </green>
-</red>
-<green><purple></purple></green>
-</xml>
-
-First LeveL Elements
-
-<Element 'THU' at 0x109e516d8>
-<Element 'Team' at 0x109e51c00>
-<Element 'THU' at 0x109e51cb0>
-<Element 'Team' at 0x109e550a8>
-<Element 'THU' at 0x109e55158>
-<Element 'Team' at 0x109e55520>
-<Element 'red' at 0x109e555d0>
-<Element 'red' at 0x109e55730>
-<Element 'red' at 0x109e557e0>
-<Element 'red' at 0x109e55940>
-<Element 'red' at 0x109e559f0>
-<Element 'red' at 0x109e55b50>
-<Element 'red' at 0x109e55c00>
-<Element 'green' at 0x109e55d60>
-<Element 'red' at 0x109e55e10>
-<Element 'green' at 0x109e55f70>
-<Element 'red' at 0x109e58050>
-<Element 'green' at 0x109e581b0>
-
-Second Level Elements
-
-<Element 'Team' at 0x109e51788>
-<Element 'JiaJia' at 0x109e51940>
-<Element 'Cooly' at 0x109e51c58>
-<Element 'Team' at 0x109e51d08>
-<Element 'JiaJia' at 0x109e51e68>
-<Element 'Cooly' at 0x109e55100>
-<Element 'Team' at 0x109e551b0>
-<Element 'JiaJia' at 0x109e55310>
-<Element 'Cooly' at 0x109e55578>
-<Element 'green' at 0x109e55628>
-<Element 'green' at 0x109e55788>
-<Element 'green' at 0x109e55838>
-<Element 'blue' at 0x109e55998>
-<Element 'green' at 0x109e55a48>
-<Element 'yellow' at 0x109e55ba8>
-<Element 'green' at 0x109e55c58>
-<Element 'blue' at 0x109e55db8>
-<Element 'green' at 0x109e55e68>
-<Element 'yellow' at 0x109e55fc8>
-<Element 'green' at 0x109e580a8>
-<Element 'purple' at 0x109e58208>
-
-Third Level Elements
-
-<Element 'ACRush' at 0x109e51838>
-<Element 'Jelly' at 0x109e51890>
-<Element 'Cooly' at 0x109e518e8>
-<Element 'Team' at 0x109e51998>
-<Element 'ACRush' at 0x109e51d60>
-<Element 'Jelly' at 0x109e51db8>
-<Element 'Cooly' at 0x109e51e10>
-<Element 'Team' at 0x109e51ec0>
-<Element 'ACRush' at 0x109e55208>
-<Element 'Jelly' at 0x109e55260>
-<Element 'Cooly' at 0x109e552b8>
-<Element 'Team' at 0x109e55368>
-<Element 'blue' at 0x109e55680>
-<Element 'yellow' at 0x109e556d8>
-<Element 'blue' at 0x109e55890>
-<Element 'yellow' at 0x109e558e8>
-<Element 'blue' at 0x109e55aa0>
-<Element 'yellow' at 0x109e55af8>
-<Element 'blue' at 0x109e55cb0>
-<Element 'yellow' at 0x109e55d08>
-<Element 'blue' at 0x109e55ec0>
-<Element 'yellow' at 0x109e55f18>
-<Element 'blue' at 0x109e58100>
-<Element 'yellow' at 0x109e58158>
-
-Done.
-"""
