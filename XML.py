@@ -23,18 +23,18 @@ for child in x:
     if ((evenNum % 2) == 0):
         patterns.append(child)
 
-print (patterns)
-print (patterns[0].tag)
+#print (patterns)
+#print (patterns[0].tag)
 
-print()
+#print()
 curPattern = []
 curPattern.append(patterns[0])
 for child in patterns[0]:
-    print (child.tag)
+    #print (child.tag)
     curPattern.append(child)
 
-print (curPattern)
-print()
+#print (curPattern)
+#print()
 occurs = 0
 hits = -1
 hitList = []
@@ -88,6 +88,8 @@ def traverse (a, d = "") :
          #   occurs += 1
         traverse(v, d + "\t")
 
+
+    # Disregard the below notes:
     #Pattern has not been found.
     #Or pattern has been found, and the end of the tag has been reached
     #Regardless, patIdx must be reset.
@@ -147,6 +149,7 @@ traverse(x)
     #print("End of loop")
 
 print()
+
 if (occurs > 0):
     occurs -= 1
     #The tags found in the pattern don't count.
