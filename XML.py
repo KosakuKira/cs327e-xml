@@ -45,6 +45,7 @@ check2 = curPattern[1].tag
 patIdx = 0
 
 def traverse (a, d = "") :
+    assert(a != None)
     global occurs
     global hits
     global patIdx
@@ -52,12 +53,15 @@ def traverse (a, d = "") :
     print(d + a.tag)
     hits += 1
 
+    assert(len(curPattern) > 0)
     if (a.tag == curPattern[patIdx]):
         patIdx += 1
         #occurs += 1
 
         #hitList.append(hits)
 
+
+    assert(len(curPattern) > 0)
     if (patIdx == len(curPattern)):
         occurs += 1
         hitList.append(hits)
