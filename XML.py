@@ -56,6 +56,11 @@ def traverse (a, d = "") :
     assert(len(curPattern) > 0)
     if (a.tag == curPattern[patIdx].tag):
         patIdx += 1
+        if (patIdx < len(curPattern)):
+            hitList.append(hits)
+        #patIdx += 1
+
+
         #occurs += 1
 
         #hitList.append(hits)
@@ -63,8 +68,9 @@ def traverse (a, d = "") :
 
     assert(len(curPattern) > 0)
     if (patIdx == len(curPattern)):
+        patIdx = 0
         occurs += 1
-        hitList.append(hits)
+        #hitList.append(hits)
 
     #if hits == 1:
      #   occurs += 1
@@ -85,7 +91,7 @@ def traverse (a, d = "") :
     #Pattern has not been found.
     #Or pattern has been found, and the end of the tag has been reached
     #Regardless, patIdx must be reset.
-    patIdx = 0
+    #patIdx = 0
     #
     print(d + "/" + a.tag)
 
@@ -145,7 +151,8 @@ if (occurs > 0):
     occurs -= 1
     #The tags found in the pattern don't count.
 
-hitList.pop(len(hitList) - 1)
+#for n in curPattern:
+ #   hitList.pop(len(hitList) - 1)
 #Because traverse picks up the pattern, inclusive
 #The pattern should not count as a hit
 #Therefore, it'll be popped.
