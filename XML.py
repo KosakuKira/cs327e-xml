@@ -54,7 +54,7 @@ def traverse (a, d = "") :
     hits += 1
 
     assert(len(curPattern) > 0)
-    if (a.tag == curPattern[patIdx]):
+    if (a.tag == curPattern[patIdx].tag):
         patIdx += 1
         #occurs += 1
 
