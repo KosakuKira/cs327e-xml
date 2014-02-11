@@ -39,16 +39,26 @@ occurs = 0
 hits = -1
 hitList = []
 
+check1 = curPattern[0].tag
 check2 = curPattern[1].tag
+
+patIdx = 0
 
 def traverse (a, d = "") :
     global occurs
     global hits
-    check1 = curPattern[0].tag
+    global patIdx
+
     print(d + a.tag)
     hits += 1
 
-    if (a.tag == check1):
+    if (a.tag == curPattern[patIdx]):
+        patIdx += 1
+        #occurs += 1
+
+        #hitList.append(hits)
+
+    if (patIdx == len(curPattern)):
         occurs += 1
         hitList.append(hits)
 
@@ -67,6 +77,12 @@ def traverse (a, d = "") :
         #if hits == 1:
          #   occurs += 1
         traverse(v, d + "\t")
+
+    #Pattern has not been found.
+    #Or pattern has been found, and the end of the tag has been reached
+    #Regardless, patIdx must be reset.
+    patIdx = 0
+    #
     print(d + "/" + a.tag)
 
 
