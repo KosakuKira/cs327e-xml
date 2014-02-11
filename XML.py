@@ -4,13 +4,13 @@ from xml.etree.ElementTree import Element, fromstring
 #tree = ET.parse('ElementTree.xml')
 #root = tree.getroot()
 
-print("ElementTree.py")
-print()
+#print("ElementTree.py")
+#print()
 
 s = "<xml>" + "".join(open("ElementTree.xml")) + "</xml>"
 assert(type(s) is str)
 # print(s)
-print()
+#print()
 
 x = fromstring(s)
 assert(type(x) is Element)
@@ -18,7 +18,7 @@ assert(type(x) is Element)
 evenNum = 0
 patterns = []
 for child in x:
-    print(child.tag)
+    #print(child.tag)
     evenNum += 1
     if ((evenNum % 2) == 0):
         patterns.append(child)
@@ -26,6 +26,7 @@ for child in x:
 print (patterns)
 print (patterns[0].tag)
 
+print()
 curPattern = []
 curPattern.append(patterns[0])
 for child in patterns[0]:
@@ -33,36 +34,43 @@ for child in patterns[0]:
     curPattern.append(child)
 
 print (curPattern)
-
+print()
 occurs = 0
-hits = 0
+hits = -1
+hitList = []
 
-check1 = curPattern[0].tag
 check2 = curPattern[1].tag
 
-def traverse (a, occurs, d = "") :
+def traverse (a, d = "") :
+    global occurs
+    global hits
+    check1 = curPattern[0].tag
     print(d + a.tag)
-    hits = 0
-    if (a.tag == check1):
-        hits += 1
-    #elif (a.tag == check2):
-        #hits += 1
+    hits += 1
 
-    if hits == 1:
+    if (a.tag == check1):
         occurs += 1
+        hitList.append(hits)
+
+    #if hits == 1:
+     #   occurs += 1
     for v in a:
-        if (v.tag == check1):
-            hits += 1
+        #hits += 1
+        #if (v.tag == check1):
+            #occurs += 1
+            #hitList.append(hits)
+        #if (v.tag == check1):
+         #   hits += 1
         #elif (a.tag == check2):
             #hits += 1
 
-        if hits == 1:
-            occurs += 1
-        traverse(v, occurs, d + "\t")
+        #if hits == 1:
+         #   occurs += 1
+        traverse(v, d + "\t")
     print(d + "/" + a.tag)
 
 
-traverse(x, occurs)
+traverse(x)
 
 #for child in x:
 
@@ -113,9 +121,18 @@ traverse(x, occurs)
     #print("End of loop")
 
 print()
+if (occurs > 0):
+    occurs -= 1
+    #The tags found in the pattern don't count.
+
+hitList.pop(len(hitList) - 1)
+#Because traverse picks up the pattern, inclusive
+#The pattern should not count as a hit
+#Therefore, it'll be popped.
+
 print("The Grand finale!")
 print("Count: " + str(occurs))
-
+print("Hit indices: " + str(hitList))
 
 
 # Below was making a list of the tags in x.iter
@@ -153,15 +170,15 @@ print("Count: " + str(occurs))
 #print (x.iter())
 #print (x.findall("./red"))
 #print (x.findall("./THU/Team/Cooly"))
-someList = x.findall("./Team/Cooly")
+#someList = x.findall("./Team/Cooly")
 
-findTerm = "./"
+#findTerm = "./"
 # Will be used for a much more flexible find
 # Find to be used for generating the first number in the output
 # i.e. the number of occurrences.
 
-print (someList)
-print (len(someList))
+#print (someList)
+#print (len(someList))
 #xRoot = x.getroot()
 
 #print (xRoot)
