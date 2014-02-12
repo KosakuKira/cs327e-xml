@@ -15,34 +15,42 @@ assert(type(s) is str)
 x = fromstring(s)
 # assert(type(x) is Element)
 
-evenNum = 0
-patterns = []
-for child in x:
-    #print(child.tag)
-    evenNum += 1
-    if ((evenNum % 2) == 0):
-        patterns.append(child)
+# evenNum = 0
+# patterns = []
+# for child in x:
+#     #print(child.tag)
+#     evenNum += 1
+#     if ((evenNum % 2) == 0):
+#         patterns.append(child)
+#
+# #print (patterns)
+# #print (patterns[0].tag)
+#
+# #print()
+# curPattern = []
+# curPattern.append(patterns[0])
+# for child in patterns[0]:
+#     #print (child.tag)
+#     curPattern.append(child)
+#
+# #print (curPattern)
+# #print()
 
-#print (patterns)
-#print (patterns[0].tag)
+startPatTag = x[-1] # first element of pattern
+curPattern = [x[-1]]
+def findPattern(x):
+    for child in x:
+        curPattern.append(child)
+        findPattern(child)
+findPattern(x[-1]) # grab full pattern
 
-#print()
-curPattern = []
-curPattern.append(patterns[0])
-for child in patterns[0]:
-    #print (child.tag)
-    curPattern.append(child)
-
-#print (curPattern)
-#print()
 occurs = 0
 hits = -1
 hitList = []
 
-
-
-check1 = curPattern[0].tag
-check2 = curPattern[1].tag
+#print(curPattern[0].tag) %test for 3 that it's working
+#print(curPattern[1].tag)
+#print(curPattern[2].tag)
 
 patIdx = 0
 
