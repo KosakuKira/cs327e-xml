@@ -44,8 +44,7 @@ def findPattern(x):
         findPattern(child)
 findPattern(x[-1]) # grab full pattern
 
-occurs = 0
-hits = -1
+hits = 0
 hitList = []
 
 #print(curPattern[0].tag) %test for 3 that it's working
@@ -62,8 +61,8 @@ patIdx = 0
 
 def traverse (a, d = "") :
     assert(a != None)
-    global occurs
     global hits
+    global hitIdx
     global patIdx
 
     print(d + a.tag)
@@ -72,40 +71,34 @@ def traverse (a, d = "") :
     #indexCatcher = []
     #firstIndex = []
 
-
-
     assert(len(curPattern) > 0)
+    for v in a:
+        if (a.find(".//" + curPattern[patIdx].tag) is None):  # Reset if the element to find is not a sub element
+             patIdx = 0
+        if patIdx == 0 and v.tag == curPattern[patIdx].tag: # does the traversed tag match the pattern?
+            hitIdx = hits
+            patIdx += 1
+        elif patIdx < len(curPattern)-1 and v.tag == curPattern[patIdx].tag:
+            patIdx +=1
+        elif patIdx == len(curPattern)-1 and v.tag == curPattern[patIdx].tag:
+            patIdx = 0
+            hitList.append(hitIdx)
 
-    if (a.find(curPattern[patIdx].tag) != None):
-
-        patIdx += 1
         #indexCatcher.append(hits)
         #if (patIdx < len(curPattern)):
            # hitList.append(hits)
         #patIdx += 1
-
-
-        #occurs += 1
-
 #        hitList.append(hits)
     #else:
      #   patIdx = 0
 
 
-    assert(len(curPattern) > 0)
-    if (patIdx == len(curPattern)):
-        patIdx = 0
-        occurs += 1
         #firstIndex.append(indexCatcher[0])
-
         #indexCatcher = []
-
-
-        hitList.append(hits)
+        #hitList.append(hits)
 
     #if hits == 1:
      #   occurs += 1
-    for v in a:
         #hits += 1
         #if (v.tag == check1):
             #occurs += 1
@@ -118,7 +111,6 @@ def traverse (a, d = "") :
         #if hits == 1:
          #   occurs += 1
         traverse(v, d + "\t")
-
 
     # Disregard the below notes:
     #Pattern has not been found.
@@ -193,7 +185,7 @@ print()
 #Therefore, it'll be popped.
 
 print("The Grand finale!")
-print("Count: " + str(occurs))
+print("Count: " + str(len(hitList)))
 print("Hit indices: " + str(hitList))
 
 
