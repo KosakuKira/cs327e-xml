@@ -13,7 +13,7 @@ assert(type(s) is str)
 #print()
 
 x = fromstring(s)
-assert(type(x) is Element)
+# assert(type(x) is Element)
 
 evenNum = 0
 patterns = []
@@ -39,10 +39,18 @@ occurs = 0
 hits = -1
 hitList = []
 
+
+
 check1 = curPattern[0].tag
 check2 = curPattern[1].tag
 
 patIdx = 0
+
+#goddard = x.findall("./Team/Cooly")
+#print(goddard)
+
+#doge = x.findall("./THU/Team/ACRush")
+#print(doge)
 
 def traverse (a, d = "") :
     assert(a != None)
@@ -53,24 +61,39 @@ def traverse (a, d = "") :
     print(d + a.tag)
     hits += 1
 
+    #indexCatcher = []
+    #firstIndex = []
+
+
+
     assert(len(curPattern) > 0)
-    if (a.tag == curPattern[patIdx].tag):
+
+    if (a.find(curPattern[patIdx].tag) != None):
+
         patIdx += 1
-        if (patIdx < len(curPattern)):
-            hitList.append(hits)
+        #indexCatcher.append(hits)
+        #if (patIdx < len(curPattern)):
+           # hitList.append(hits)
         #patIdx += 1
 
 
         #occurs += 1
 
-        #hitList.append(hits)
+#        hitList.append(hits)
+    #else:
+     #   patIdx = 0
 
 
     assert(len(curPattern) > 0)
     if (patIdx == len(curPattern)):
         patIdx = 0
         occurs += 1
-        #hitList.append(hits)
+        #firstIndex.append(indexCatcher[0])
+
+        #indexCatcher = []
+
+
+        hitList.append(hits)
 
     #if hits == 1:
      #   occurs += 1
@@ -95,6 +118,7 @@ def traverse (a, d = "") :
     #Regardless, patIdx must be reset.
     #patIdx = 0
     #
+
     print(d + "/" + a.tag)
 
 
@@ -150,8 +174,8 @@ traverse(x)
 
 print()
 
-if (occurs > 0):
-    occurs -= 1
+#if (occurs > 0):
+    #occurs -= 1
     #The tags found in the pattern don't count.
 
 #for n in curPattern:
