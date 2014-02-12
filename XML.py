@@ -1,11 +1,7 @@
 from xml.etree.ElementTree import Element, fromstring
 #import xml.etree.ElementTree as ET
-
 #tree = ET.parse('ElementTree.xml')
 #root = tree.getroot()
-
-#print("ElementTree.py")
-#print()
 
 s = "<xml>" + "".join(open("ElementTree.xml")) + "</xml>"
 assert(type(s) is str)
@@ -15,42 +11,26 @@ assert(type(s) is str)
 x = fromstring(s)
 # assert(type(x) is Element)
 
-# evenNum = 0
-# patterns = []
-# for child in x:
-#     #print(child.tag)
-#     evenNum += 1
-#     if ((evenNum % 2) == 0):
-#         patterns.append(child)
-#
-# #print (patterns)
-# #print (patterns[0].tag)
-#
-# #print()
-# curPattern = []
-# curPattern.append(patterns[0])
-# for child in patterns[0]:
-#     #print (child.tag)
-#     curPattern.append(child)
-#
-# #print (curPattern)
-# #print()
 #print(x.findall("./Team/Cooly"))
 #print(x.findall("./THU/Team/ACRush"))
 
 startPatTag = x[-1] # first element of pattern
 curPattern = [x[-1]]
+numchild = []
 def findPattern(x):
+    global numchild
+    numchild.append(len(x)) # last one will be 0
     for child in x:
         curPattern.append(child)
         findPattern(child)
 findPattern(x[-1]) # grab full pattern
+# print(numchild) # structure of pattern
 
 hits = 0
 hitList = []
 patIdx = 0
-
-#print(curPattern[0].tag) %test for 3 that it's working
+print(type(curPattern[0]))
+#print(curPattern[0].tag) # test for 3 that it's working
 #print(curPattern[1].tag)
 #print(curPattern[2].tag)
 
@@ -124,7 +104,7 @@ traverse(x)
 
 
 print()
-hitList.pop(-1) # remove pattern since traverse picks it up
+# hitList.pop(-1) # remove pattern since traverse picks it up
 
 print("The Grand finale!")
 print("Count: " + str(len(hitList)))
