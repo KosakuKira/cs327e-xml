@@ -69,9 +69,10 @@ def traverse (a, d = "") :
 
     assert(len(curPattern) > 0)
     for v in a:
-        if (a.find(".//" + curPattern[patIdx].tag) is None):  # Reset if the element to find is not a sub element
-            print("couldn't find", curPattern[patIdx].tag, "under", a.tag)
-            patIdx = 0
+        # removed because redundant:
+        # if (a.find(".//" + curPattern[patIdx].tag) is None):  # Reset if the element to find is not a sub element
+        #     print("couldn't find", curPattern[patIdx].tag, "under", a.tag)
+        #     patIdx = 0
         if patIdx == 0 and v.tag == curPattern[patIdx].tag: # does the traversed tag match the pattern?
             print("found", curPattern[patIdx].tag, "tag")
             hitIdx = hits
@@ -117,15 +118,19 @@ def traverse (a, d = "") :
          #   occurs += 1
         traverse(v, d + "\t")
 
-    # Disregard the below notes:
-    #Pattern has not been found.
-    #Or pattern has been found, and the end of the tag has been reached
-    #Regardless, patIdx must be reset.
-    #patIdx = 0
-
     print(d + "/" + a.tag)
 
 traverse(x)
+
+
+print()
+hitList.pop(-1) # remove pattern since traverse picks it up
+
+print("The Grand finale!")
+print("Count: " + str(len(hitList)))
+print("Hit indices: " + str(hitList))
+
+# Previous Attempts:
 
 #for child in x:
 
@@ -173,12 +178,6 @@ traverse(x)
 
     #print("End of loop")
 
-print()
-hitList.pop(-1) # remove pattern since traverse picks it up
-
-print("The Grand finale!")
-print("Count: " + str(len(hitList)))
-print("Hit indices: " + str(hitList))
 
 
 # Below was making a list of the tags in x.iter
@@ -225,4 +224,3 @@ print("Hit indices: " + str(hitList))
 
 #print (xRoot)
 #print (xRoot.toString())
-
