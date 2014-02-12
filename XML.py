@@ -35,6 +35,8 @@ x = fromstring(s)
 #
 # #print (curPattern)
 # #print()
+#print(x.findall("./Team/Cooly"))
+#print(x.findall("./THU/Team/ACRush"))
 
 startPatTag = x[-1] # first element of pattern
 curPattern = [x[-1]]
@@ -46,24 +48,18 @@ findPattern(x[-1]) # grab full pattern
 
 hits = 0
 hitList = []
+patIdx = 0
 
 #print(curPattern[0].tag) %test for 3 that it's working
 #print(curPattern[1].tag)
 #print(curPattern[2].tag)
-
-patIdx = 0
-
-#goddard = x.findall("./Team/Cooly")
-#print(goddard)
-
-#doge = x.findall("./THU/Team/ACRush")
-#print(doge)
 
 def traverse (a, d = "") :
     assert(a != None)
     global hits
     global hitIdx
     global patIdx
+    global hitList
 
     print(d + a.tag)
     hits += 1
@@ -74,13 +70,23 @@ def traverse (a, d = "") :
     assert(len(curPattern) > 0)
     for v in a:
         if (a.find(".//" + curPattern[patIdx].tag) is None):  # Reset if the element to find is not a sub element
-             patIdx = 0
+            print("couldn't find", curPattern[patIdx].tag, "under", a.tag)
+            patIdx = 0
         if patIdx == 0 and v.tag == curPattern[patIdx].tag: # does the traversed tag match the pattern?
+            print("found", curPattern[patIdx].tag, "tag")
             hitIdx = hits
             patIdx += 1
+            if (v.find(".//" + curPattern[patIdx].tag) is None):
+                print(v.tag, "it's not in there")
+                patIdx = 0
         elif patIdx < len(curPattern)-1 and v.tag == curPattern[patIdx].tag:
-            patIdx +=1
+            print("found", curPattern[patIdx].tag, "tag")
+            patIdx += 1
+            if (v.find(".//" + curPattern[patIdx].tag) is None):
+                print("but", curPattern[patIdx].tag, "is not under it")
+                patIdx = 0
         elif patIdx == len(curPattern)-1 and v.tag == curPattern[patIdx].tag:
+            print("found", curPattern[patIdx].tag, "end tag, saving...")
             patIdx = 0
             hitList.append(hitIdx)
 
@@ -91,7 +97,6 @@ def traverse (a, d = "") :
 #        hitList.append(hits)
     #else:
      #   patIdx = 0
-
 
         #firstIndex.append(indexCatcher[0])
         #indexCatcher = []
@@ -117,10 +122,8 @@ def traverse (a, d = "") :
     #Or pattern has been found, and the end of the tag has been reached
     #Regardless, patIdx must be reset.
     #patIdx = 0
-    #
 
     print(d + "/" + a.tag)
-
 
 traverse(x)
 
@@ -147,8 +150,6 @@ traverse(x)
        # print("Something B")
         #print()
 
-
-
     #print ("Birde: " + str(child.find(curPattern[0].tag)))
     #if (child.tag is not curPattern[0].tag) and (child.find(curPattern[0].tag) is None):
      #   print(child.find(curPattern[0].tag))
@@ -173,16 +174,7 @@ traverse(x)
     #print("End of loop")
 
 print()
-
-#if (occurs > 0):
-    #occurs -= 1
-    #The tags found in the pattern don't count.
-
-#for n in curPattern:
- #   hitList.pop(len(hitList) - 1)
-#Because traverse picks up the pattern, inclusive
-#The pattern should not count as a hit
-#Therefore, it'll be popped.
+hitList.pop(-1) # remove pattern since traverse picks it up
 
 print("The Grand finale!")
 print("Count: " + str(len(hitList)))
@@ -209,13 +201,9 @@ print("Hit indices: " + str(hitList))
 #teamChild1 = team[0].find('Hoenn') # No 'Hoenn' tags within Team
 #teamChild2 = team[0].find('Cooly') # Found 1 Cooly tag within Team
 
-
-
 #print(teamChild1)
 #print(teamChild2)
 #print()
-
-
 
 #print(thu)
 #print(team)
