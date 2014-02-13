@@ -5,13 +5,22 @@
 
 	<JiaJia>
 		<Team>
-			<Cooly><Amber></Amber></Cooly>
+			<Cooly>
+                <Amber></Amber>
+            </Cooly>
 		</Team>
 	</JiaJia>
     <Team>
-			<Amber></Amber>
+
             <Cooly></Cooly>
 	</Team>
+    <No>
+        <Team>
+            <Cooly>
+                <Amber></Amber>
+            </Cooly>
+        </Team>
+    </No>
 </THU>
 
-<Team><Cooly></Cooly><Amber></Amber></Team>
+<Team><Cooly><Amber></Amber></Cooly></Team>
