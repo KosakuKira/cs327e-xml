@@ -32,7 +32,7 @@ print(curPattern[0].tag)
 print(curPattern[0].findall(".//*")) #finds all that are children or grandchildren
 print(curPattern[0].findall(".//" + curPattern[1].tag)) #finds all that are children or grandchildren
 print(curPattern[0].findall(".//" + curPattern[2].tag)) #finds all that are children or grandchildren
-
+print(curPattern[1].findall(".//" + curPattern[2].tag) == [])#finds all that are children or grandchildren
 # if this fails then it's a sibling not a child ^
 
 print("\n")
@@ -66,21 +66,25 @@ def traverse (a, d = "") :
             hitIdx = hits
             patIdx += 1
 
-            if (v.find(".//" + curPattern[patIdx].tag) is None) and curPattern[1].findall(".//" + curPattern[2].tag) is None:
+            if (v.find(".//" + curPattern[patIdx].tag) is None):
                 print("but", curPattern[patIdx].tag, "is not under it")
-               # if (a.find(".//" + curPattern[patIdx].tag) is None):
-               #     print("and", curPattern[patIdx].tag, "is not beside it")
-               #     patIdx = 0
-                
+                patIdx = 0
+
         elif patIdx < len(curPattern)-1 and v.tag == curPattern[patIdx].tag:
             print("found", curPattern[patIdx].tag, "tag")
             print(numchild[patIdx-1])
             patIdx += 1
-
-            if (v.find(".//" + curPattern[patIdx].tag) is None):
+            print("debug", curPattern[patIdx-1].tag)
+            print("debug", curPattern[patIdx].tag)
+            if curPattern[patIdx-1].findall(".//" + curPattern[patIdx].tag) == []: # the previous was not a parent
+                print(curPattern[patIdx].tag, "is a sibling!")
+                # do sibling things
+                # a.find(".//" + curPattern[patIdx].tag)
+            elif (v.find(".//" + curPattern[patIdx].tag) is None):   # if not a sibling
                 print("but", curPattern[patIdx].tag, "is not under it")
                 patIdx = 0
-                #if a.find(".//" + curPattern[patIdx].tag) is None and curPattern[patIdx].find(".//" + curPattern[patIdx].tag):
+
+               # if a.find(".//" + curPattern[patIdx].tag) is None and curPattern[patIdx].find(".//" + curPattern[patIdx].tag):
                #     print("and", curPattern[patIdx].tag, "is not beside it")
                #     patIdx = 0
 
