@@ -28,17 +28,13 @@ def findPattern(x):
 
 findPattern(x[-1]) # grab full pattern
 
-print(curPattern[0].tag)
-print(curPattern[0].findall(".//*")) #finds all that are children or grandchildren
-print(curPattern[0].findall(".//" + curPattern[1].tag)) #finds all that are children or grandchildren
-print(curPattern[0].findall(".//" + curPattern[2].tag)) #finds all that are children or grandchildren
-print(curPattern[1].findall(".//" + curPattern[2].tag) == [])#finds all that are children or grandchildren
+# print(curPattern[0].tag)
+# print(curPattern[0].findall(".//*")) #finds all that are children or grandchildren
+# print(curPattern[0].findall(".//" + curPattern[1].tag)) #finds all that are children or grandchildren
+# print(curPattern[1].findall(".//" + curPattern[2].tag) != [])#sibling finder
 
 
-# if this fails then it's a sibling not a child ^
-
-print("\n")
-print(numchild) # structure of pattern
+# print(numchild) # structure of pattern
 
 hits = 0
 hitList = []
@@ -69,24 +65,29 @@ def traverse (a, d = "") :
             patIdx += 1
 
             if (v.find(".//" + curPattern[patIdx].tag) is None):
-                print("but", curPattern[patIdx].tag, "is not under it")
+                print("but", curPattern[patIdx].tag, "is not under it 1")
                 patIdx = 0
 
         elif patIdx < len(curPattern)-1 and v.tag == curPattern[patIdx].tag:
             print("found", curPattern[patIdx].tag, "tag")
             # print(numchild[patIdx-1])
             patIdx += 1
+            print("comparing",  curPattern[patIdx-1].tag, "and", curPattern[patIdx].tag)
 
-            if curPattern[patIdx-1].findall(".//" + curPattern[patIdx].tag) == []: # the previous was not a parent
-                print(curPattern[patIdx].tag, "We're looking for a sibling!")
-                if a.findall(".//" + curPattern[patIdx].tag) is None: # found a sibling!
-                    print(curPattern[patIdx].tag, "<- sibling!") # bug; this is never tripping
-               # else:
-                #    patIdx -= 1
+            if curPattern[patIdx-1].findall(".//" + curPattern[patIdx].tag) == []: # if empty, not parent
+                print(curPattern[patIdx].tag, "We are looking for a sibling!")
+                if (v.find(".//" + curPattern[patIdx].tag) is None):   # if not a sibling
+                    print("but", curPattern[patIdx].tag, "is not a sibling")
+                    patIdx = 0
+                if a.findall(".//" + curPattern[patIdx].tag) != []: # found a sibling!
+                    print(curPattern[patIdx].tag, "<- sibling!")
+                else:
+                    patIdx = 0
                 #  do sibling things
                 # a.find(".//" + curPattern[patIdx].tag)
+
             elif (v.find(".//" + curPattern[patIdx].tag) is None):   # if not a sibling
-                print("but", curPattern[patIdx].tag, "is not under it")
+                print("but", curPattern[patIdx].tag, "is not under it 2")
                 patIdx = 0
 
                # if a.find(".//" + curPattern[patIdx].tag) is None and curPattern[patIdx].find(".//" + curPattern[patIdx].tag):
