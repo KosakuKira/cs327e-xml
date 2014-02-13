@@ -17,20 +17,25 @@ x = fromstring(s)
 startPatTag = x[-1] # first element of pattern
 curPattern = [x[-1]]
 numchild = []
+
 def findPattern(x):
     global numchild
     numchild.append(len(x)) # last one will be 0
-    test = len(x)
     for child in x:
-        test -= 1
         curPattern.append(child)
         numchild.append
         findPattern(child)
 
-print(curPattern[0].findall(".//*"))
+findPattern(x[-1]) # grab full pattern
+
+print(curPattern[0].tag)
+print(curPattern[0].findall(".//*")) #finds all that are children or grandchildren
+print(curPattern[0].findall(".//" + curPattern[1].tag)) #finds all that are children or grandchildren
+print(curPattern[0].findall(".//" + curPattern[2].tag)) #finds all that are children or grandchildren
+
+# if this fails then it's a sibling not a child ^
 
 print("\n")
-findPattern(x[-1]) # grab full pattern
 print(numchild) # structure of pattern
 
 hits = 0
@@ -60,12 +65,13 @@ def traverse (a, d = "") :
             print("found", curPattern[patIdx].tag, "tag")
             hitIdx = hits
             patIdx += 1
-            if (v.find(".//" + curPattern[patIdx].tag) is None):
+
+            if (v.find(".//" + curPattern[patIdx].tag) is None) and curPattern[1].findall(".//" + curPattern[2].tag) is None:
                 print("but", curPattern[patIdx].tag, "is not under it")
                # if (a.find(".//" + curPattern[patIdx].tag) is None):
                #     print("and", curPattern[patIdx].tag, "is not beside it")
                #     patIdx = 0
-
+                
         elif patIdx < len(curPattern)-1 and v.tag == curPattern[patIdx].tag:
             print("found", curPattern[patIdx].tag, "tag")
             print(numchild[patIdx-1])
