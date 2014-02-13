@@ -20,11 +20,18 @@ numchild = []
 def findPattern(x):
     global numchild
     numchild.append(len(x)) # last one will be 0
+    test = len(x)
     for child in x:
+        test -= 1
         curPattern.append(child)
+        numchild.append
         findPattern(child)
+
+print(curPattern[0].findall(".//*"))
+
+print("\n")
 findPattern(x[-1]) # grab full pattern
-# print(numchild) # structure of pattern
+print(numchild) # structure of pattern
 
 hits = 0
 hitList = []
@@ -49,24 +56,30 @@ def traverse (a, d = "") :
 
     assert(len(curPattern) > 0)
     for v in a:
-        # removed because redundant:
-        # if (a.find(".//" + curPattern[patIdx].tag) is None):  # Reset if the element to find is not a sub element
-        #     print("couldn't find", curPattern[patIdx].tag, "under", a.tag)
-        #     patIdx = 0
         if patIdx == 0 and v.tag == curPattern[patIdx].tag: # does the traversed tag match the pattern?
             print("found", curPattern[patIdx].tag, "tag")
             hitIdx = hits
             patIdx += 1
             if (v.find(".//" + curPattern[patIdx].tag) is None):
-                print(v.tag, "it's not in there")
-                patIdx = 0
+                print("but", curPattern[patIdx].tag, "is not under it")
+               # if (a.find(".//" + curPattern[patIdx].tag) is None):
+               #     print("and", curPattern[patIdx].tag, "is not beside it")
+               #     patIdx = 0
+
         elif patIdx < len(curPattern)-1 and v.tag == curPattern[patIdx].tag:
             print("found", curPattern[patIdx].tag, "tag")
+            print(numchild[patIdx-1])
             patIdx += 1
+
             if (v.find(".//" + curPattern[patIdx].tag) is None):
                 print("but", curPattern[patIdx].tag, "is not under it")
                 patIdx = 0
+                #if a.find(".//" + curPattern[patIdx].tag) is None and curPattern[patIdx].find(".//" + curPattern[patIdx].tag):
+               #     print("and", curPattern[patIdx].tag, "is not beside it")
+               #     patIdx = 0
+
         elif patIdx == len(curPattern)-1 and v.tag == curPattern[patIdx].tag:
+            print(numchild[patIdx - 1])
             print("found", curPattern[patIdx].tag, "end tag, saving...")
             patIdx = 0
             hitList.append(hitIdx)
@@ -99,9 +112,7 @@ def traverse (a, d = "") :
         traverse(v, d + "\t")
 
     print(d + "/" + a.tag)
-
 traverse(x)
-
 
 print()
 # hitList.pop(-1) # remove pattern since traverse picks it up
@@ -113,9 +124,7 @@ print("Hit indices: " + str(hitList))
 # Previous Attempts:
 
 #for child in x:
-
     #b = ""
-
     #Remains of old algorithm below
     #Algorithm was naive and unsuccessful
 
