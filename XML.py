@@ -33,6 +33,8 @@ print(curPattern[0].findall(".//*")) #finds all that are children or grandchildr
 print(curPattern[0].findall(".//" + curPattern[1].tag)) #finds all that are children or grandchildren
 print(curPattern[0].findall(".//" + curPattern[2].tag)) #finds all that are children or grandchildren
 print(curPattern[1].findall(".//" + curPattern[2].tag) == [])#finds all that are children or grandchildren
+
+
 # if this fails then it's a sibling not a child ^
 
 print("\n")
@@ -72,13 +74,16 @@ def traverse (a, d = "") :
 
         elif patIdx < len(curPattern)-1 and v.tag == curPattern[patIdx].tag:
             print("found", curPattern[patIdx].tag, "tag")
-            print(numchild[patIdx-1])
+            # print(numchild[patIdx-1])
             patIdx += 1
-            print("debug", curPattern[patIdx-1].tag)
-            print("debug", curPattern[patIdx].tag)
+
             if curPattern[patIdx-1].findall(".//" + curPattern[patIdx].tag) == []: # the previous was not a parent
-                print(curPattern[patIdx].tag, "is a sibling!")
-                # do sibling things
+                print(curPattern[patIdx].tag, "We're looking for a sibling!")
+                if a.findall(".//" + curPattern[patIdx].tag) is None: # found a sibling!
+                    print(curPattern[patIdx].tag, "<- sibling!") # bug; this is never tripping
+               # else:
+                #    patIdx -= 1
+                #  do sibling things
                 # a.find(".//" + curPattern[patIdx].tag)
             elif (v.find(".//" + curPattern[patIdx].tag) is None):   # if not a sibling
                 print("but", curPattern[patIdx].tag, "is not under it")
@@ -89,7 +94,7 @@ def traverse (a, d = "") :
                #     patIdx = 0
 
         elif patIdx == len(curPattern)-1 and v.tag == curPattern[patIdx].tag:
-            print(numchild[patIdx - 1])
+           # print(numchild[patIdx - 1])
             print("found", curPattern[patIdx].tag, "end tag, saving...")
             patIdx = 0
             hitList.append(hitIdx)
@@ -121,7 +126,7 @@ def traverse (a, d = "") :
          #   occurs += 1
         traverse(v, d + "\t")
 
-    print(d + "/" + a.tag)
+   # print(d + "/" + a.tag)
 traverse(x)
 
 print()
