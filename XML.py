@@ -26,15 +26,15 @@ def findPattern(x):
         curPattern.append(child)
         whatparents.append(x)
         counter += 1
-        if child is x[-1]:
-            whatsiblings.append(x.findall("./*")) #all xs children)
+       # if child is x[0]:
+       #     whatsiblings.append(x.findall("./*")) #all xs children)
         findPattern(child)
 findPattern(x[-1]) # grab full pattern
 
 print("What parents?")
 print(whatparents)
-print("What siblings?")
-print(whatsiblings)
+# print("What siblings?")
+# print(whatsiblings)
 #content = whatsiblings[0]
 #print(content[0])
 print("\n")
@@ -57,35 +57,38 @@ print("\n")
 hits = 0
 hitList = []
 patIdx = 0
-levelIdx = 0
+patlevelIdx = 0
 
 def examinefamily(a,v):
     global patIdx
-    global levelIdx # what sub level in the pattern are you at
-    print(levelIdx)
+    global patlevelIdx # what sub level in the pattern are you at
+    print(patlevelIdx)
   #  test = whatsiblings[patIdx-1]
+  #  print(whatsiblings[patlevelIdx])
+    print(curPattern[patIdx-1])
 
     if whatparents[patIdx-1].tag == curPattern[patIdx-1].tag: #check for parent
+
         print("Parent is", whatparents[patIdx-1].tag, "and child is", curPattern[patIdx].tag)
         if a.find(".//" + curPattern[patIdx].tag) is None: # there is not a match
             print("No Match. Restart.")
             patIdx = 0
-            levelIdx = 0
+            patlevelIdx = 0
         else:
             print("Match.")
             patIdx += 1
-            levelIdx +=1
-    elif curPattern[patIdx-1] in whatsiblings[patIdx-1]:
+            patlevelIdx +=1
+    elif curPattern[patIdx-1] in whatsiblings[patlevelIdx-1]:
         print(curPattern[patIdx-1].tag, "and", curPattern[patIdx].tag, "are siblings.")
         print("Both have parent", whatparents[patIdx-1].tag)
         if a.find(".//" + curPattern[patIdx].tag) is None:# there is not a match
             print("No Match. Restart.")
             patIdx = 0
-            levelIdx = 0
+            patlevelIdx = 0
         else:
             print("Match")
             patIdx +=1
-            # levelIdx <- leave alone because it is a sibling
+            # patlevelIdx <- leave alone because it is a sibling
     else:
         print("Error?!! D:")
         patIdx = 0
@@ -108,11 +111,15 @@ def examinefamily2(a,v):
         if a.find("./" + curPattern[patIdx].tag) is None: # Note: this only finds immediate siblings
             print("Future: No Match. Restart.")
             patIdx = 0
+            
         else:
             print("Future: Match")
     else:
         print("Future Error D:")
         patIdx = 0
+
+
+#print("Parent found is:", curPattern[patIdx-1].find('..'))
 
 def traverse (a, d = "") :
     assert(a != None)
@@ -120,14 +127,15 @@ def traverse (a, d = "") :
     global hitIdx
     global patIdx
     global hitList
-    global levelIdx
-
+    global patlevelIdx
+    global searchlevelIdx
     print(d + a.tag)
     hits += 1
 
     assert(len(curPattern) > 0)
 
     for v in a:
+        # v is a parent
         if patIdx == 0 and v.tag == curPattern[patIdx].tag: # does the traversed tag match the pattern?
             print("Matched", curPattern[patIdx].tag, "tag. Found root.")
             hitIdx = hits
@@ -135,14 +143,22 @@ def traverse (a, d = "") :
 
         elif patIdx < len(curPattern)-1 and v.tag == curPattern[patIdx].tag: # matches a tag after first
             # print("Matched", curPattern[patIdx].tag, "tag...")
-            examinefamily(a,v)
-            examinefamily2(a,v)
+            print("Parent to find is:", whatparents[patIdx-1].tag)
+            print("Parent found is:", a.tag)
+            if whatparents[patIdx-1].tag is a.tag:
+                patIdx += 1
+            else:
+                patIdx = 0
 
         elif patIdx == len(curPattern)-1 and v.tag == curPattern[patIdx].tag:
            # print(numchild[patIdx - 1])
-            examinefamily(a,v)
+            print("Parent to find is:", whatparents[patIdx-1].tag)
+            print("Parent found is:", a.tag)
+            if whatparents[patIdx-1].tag is a.tag:
+                patIdx += 1
+            else:
+                patIdx = 0
             print("Wow, found", curPattern[patIdx-1].tag, "end tag, saving...")
-
             patIdx = 0
             hitList.append(hitIdx)
 
@@ -150,8 +166,8 @@ def traverse (a, d = "") :
 
   #  print(d + "/" + a.tag)
 traverse(x)
-
 print()
+
 # hitList.pop(-1) # remove pattern since traverse picks it up
 
 print("The Grand finale!")
