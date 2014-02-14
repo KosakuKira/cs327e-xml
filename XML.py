@@ -3,41 +3,34 @@ from xml.etree.ElementTree import Element, fromstring
 #tree = ET.parse('ElementTree.xml')
 #root = tree.getroot()
 
-s = "<xml>" + "".join(open("ElementTree.xml")) + "</xml>"
-assert(type(s) is str)
+def xml_read():
+    s = "<xml>" + "".join(open("ElementTree.xml")) + "</xml>"
+    assert(type(s) is str)
+    x = fromstring(s)
+    return x
+    # assert(type(x) is Element)
 
-x = fromstring(s)
-# assert(type(x) is Element)
+# whatsiblings = [x[1]]
 
-startPatTag = x[-1] # first element of pattern
-curPattern = [x[-1]]
-whatparents = [] # should consider a whatsibling var
-whatsiblings = [x[1]]
+class StoreGlob1():   # Store globals. everytime you call, it reinitializes
+    def __init__(self,x):
+    #    self.startPatTag = x[-1] # first element of pattern
+        self.curPattern = [x[-1]]
+        self.PatCount = 0
+        self.whatparents = []
 
-# TODO: Make list of list of siblings
-counter = 0
-#print("\n")
-
-def findPattern(x):
-    global whatparents
-    global whatsiblings
-    global counter
+def xml_findPattern(globals1,x):
+    # global whatsiblings
     for child in x:
-        curPattern.append(child)
-        whatparents.append(x)
-        counter += 1
-       # if child is x[0]:
-       #     whatsiblings.append(x.findall("./*")) #all xs children)
-        findPattern(child)
-findPattern(x[-1]) # grab full pattern
+        globals1.curPattern.append(child)
+        globals1.whatparents.append(x)
+        globals1.PatCount += 1
+      # if child is x[0]:
+      # whatsiblings.append(x.findall("./*")) #all xs children)
+        xml_findPattern(globals1, child)
 
 #print("What parents?")
 #print(whatparents)
-# #print("What siblings?")
-# #print(whatsiblings)
-#content = whatsiblings[0]
-##print(content[0])
-#print("\n")
 
 ##print(x.findall("./Team/Cooly"))
 ##print(x.findall("./THU/Team/ACRush"))
@@ -48,131 +41,84 @@ findPattern(x[-1]) # grab full pattern
 ##print(curPattern[1].tag, whatparents[0].tag)
 ##print(curPattern[2].tag, whatparents[1].tag)
 ##print(curPattern[3].tag, whatparents[2].tag)
-##print(curPattern[4].tag, whatparents[3].tag)
-##print(curPattern[0].tag) # test for 3 that it's working
-##print(curPattern[1].tag)
-##print(curPattern[2].tag)
+
+# Doesn't work: print("Parent found is:", curPattern[patIdx-1].find('..'))
 # #print("--------------------------------------------")
 
-hits = 0
-hitList = []
-patIdx = 0
-patlevelIdx = 0
+class StoreGlob2():   # Store globals. everytime you call, it reinitializes
+    def __init__(self):
+        self.hits = 0
+        self.hitIdx = 0
+        self.hitList = []
+        self.patIdx = 0
+        #    global levelIdx
+        #    global searchlevelIdx
 
-def examinefamily(a,v):
-    global patIdx
-    global patlevelIdx # what sub level in the pattern are you at
-    #print(patlevelIdx)
-  #  test = whatsiblings[patIdx-1]
-  #  #print(whatsiblings[patlevelIdx])
-    #print(curPattern[patIdx-1])
-
-    if whatparents[patIdx-1].tag == curPattern[patIdx-1].tag: #check for parent
-
-        #print("Parent is", whatparents[patIdx-1].tag, "and child is", curPattern[patIdx].tag)
-        if a.find(".//" + curPattern[patIdx].tag) is None: # there is not a match
-            #print("No Match. Restart.")
-            patIdx = 0
-            patlevelIdx = 0
-        else:
-            #print("Match.")
-            patIdx += 1
-            patlevelIdx +=1
-    elif curPattern[patIdx-1] in whatsiblings[patlevelIdx-1]:
-        #print(curPattern[patIdx-1].tag, "and", curPattern[patIdx].tag, "are siblings.")
-        #print("Both have parent", whatparents[patIdx-1].tag)
-        if a.find(".//" + curPattern[patIdx].tag) is None:# there is not a match
-            #print("No Match. Restart.")
-            patIdx = 0
-            patlevelIdx = 0
-        else:
-            #print("Match")
-            patIdx +=1
-            # patlevelIdx <- leave alone because it is a sibling
-    else:
-        #print("Error?!! D:")
-        patIdx = 0
-
-def examinefamily2(a,v):
-    global patIdx
-
-    #print(whatsiblings[patIdx-1])
-    #print(curPattern[patIdx-1])
-    if whatparents[patIdx-1].tag == curPattern[patIdx-1].tag: #check for parent
-        #print("Future: Parent is", whatparents[patIdx-1].tag, "and child is", curPattern[patIdx].tag)
-        if v.find(".//" + curPattern[patIdx].tag) is None:# there is not a match
-            #print("Future: no Match. Restart.")
-            patIdx = 0
-        else:
-            #print("Future: Match")
-    elif curPattern[patIdx-1] in whatsiblings[patIdx-1]:
-        #print("GREAT")
-        #print("Future:", curPattern[patIdx-1].tag, "and", curPattern[patIdx].tag, "are siblings with parent", whatparents[patIdx-1].tag)
-        if a.find("./" + curPattern[patIdx].tag) is None: # Note: this only finds immediate siblings
-            #print("Future: No Match. Restart.")
-            patIdx = 0
-            
-        else:
-            #print("Future: Match")
-    else:
-        #print("Future Error D:")
-        patIdx = 0
-
-
-##print("Parent found is:", curPattern[patIdx-1].find('..'))
-
-def traverse (a, d = "") :
+def xml_traverse (globals1,globals2, a, d = "") :
     assert(a != None)
-    global hits
-    global hitIdx
-    global patIdx
-    global hitList
-    global patlevelIdx
-    global searchlevelIdx
-    #print(d + a.tag)
-    hits += 1
-
-    assert(len(curPattern) > 0)
+    # print(d + a.tag)
+    globals2.hits += 1
+    assert(len(globals1.curPattern) > 0)
 
     for v in a:
         # v is a parent
-        if patIdx == 0 and v.tag == curPattern[patIdx].tag: # does the traversed tag match the pattern?
+        if globals2.patIdx == 0 and v.tag == globals1.curPattern[globals2.patIdx].tag: # does the traversed tag match the pattern?
             #print("Matched", curPattern[patIdx].tag, "tag. Found root.")
-            hitIdx = hits
-            patIdx += 1
-
-        elif patIdx < len(curPattern)-1 and v.tag == curPattern[patIdx].tag: # matches a tag after first
+            globals2.hitIdx = globals2.hits
+            globals2.patIdx += 1
+        elif globals2.patIdx < len(globals1.curPattern)-1 and v.tag == globals1.curPattern[globals2.patIdx].tag: # matches a tag after first
             # #print("Matched", curPattern[patIdx].tag, "tag...")
             #print("Parent to find is:", whatparents[patIdx-1].tag)
             #print("Parent found is:", a.tag)
-            if whatparents[patIdx-1].tag is a.tag:
-                patIdx += 1
+            if globals1.whatparents[globals2.patIdx-1].tag is a.tag:
+                globals2.patIdx += 1
             else:
-                patIdx = 0
-
-        elif patIdx == len(curPattern)-1 and v.tag == curPattern[patIdx].tag:
-           # #print(numchild[patIdx - 1])
+                globals2.patIdx = 0
+        elif globals2.patIdx == len(globals1.curPattern)-1 and v.tag == globals1.curPattern[globals2.patIdx].tag:
+            #print(numchild[patIdx - 1])
             #print("Parent to find is:", whatparents[patIdx-1].tag)
             #print("Parent found is:", a.tag)
-            if whatparents[patIdx-1].tag is a.tag:
-                patIdx += 1
-            else:
-                patIdx = 0
+            if globals1.whatparents[globals2.patIdx-1].tag is a.tag:
+                globals2.hitList.append(globals2.hitIdx)
+            globals2.patIdx = 0
+            
             #print("Wow, found", curPattern[patIdx-1].tag, "end tag, saving...")
-            patIdx = 0
-            hitList.append(hitIdx)
-
-        traverse(v, d + "\t")
-
+        xml_traverse(globals1,globals2,v, d + "\t")
   #  #print(d + "/" + a.tag)
-traverse(x)
+# xml_traverse(x)
 #print()
+def xml_print(globals1):
+    #print("The Grand finale!")
+    print(str(len(globals1.hitList)))
+    print(str(globals1.hitList))
 
-# hitList.pop(-1) # remove pattern since traverse picks it up
+def xml_run(filename):
+    xmltree = xml_read()
+    globals1 = StoreGlob1(xmltree)
+    xml_findPattern(globals1,xmltree[-1])
+    globals2 = StoreGlob2()
+    xml_traverse(globals1,globals2,xmltree)
+    globals2.hitList.pop(-1) # remove pattern since traverse picks it up
+    xml_print(globals2)
 
-#print("The Grand finale!")
-print("Count: " + str(len(hitList)))
-print("Hit indices: " + str(hitList))
+xml_run("ElementTree.xml")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+#print("Count: " + str(len(hitList)))
+#print("Hit indices: " + str(hitList))
+
 
             #    # if a.find(".//" + curPattern[patIdx].tag) is None and curPattern[patIdx].find(".//" + curPattern[patIdx].tag):
             #    #     #print("and", curPattern[patIdx].tag, "is not beside it")
@@ -187,6 +133,64 @@ print("Hit indices: " + str(hitList))
 
 ############
 ##  Previous Attempts:
+
+# def examinefamily(a,v):
+#     global patIdx
+#     global patlevelIdx # what sub level in the pattern are you at
+#     #print(patlevelIdx)
+#   #  test = whatsiblings[patIdx-1]
+#   #  #print(whatsiblings[patlevelIdx])
+#     #print(curPattern[patIdx-1])
+#
+#     if whatparents[patIdx-1].tag == curPattern[patIdx-1].tag: #check for parent
+#
+#         #print("Parent is", whatparents[patIdx-1].tag, "and child is", curPattern[patIdx].tag)
+#         if a.find(".//" + curPattern[patIdx].tag) is None: # there is not a match
+#             #print("No Match. Restart.")
+#             patIdx = 0
+#             patlevelIdx = 0
+#         else:
+#             #print("Match.")
+#             patIdx += 1
+#             patlevelIdx +=1
+#     elif curPattern[patIdx-1] in whatsiblings[patlevelIdx-1]:
+#         #print(curPattern[patIdx-1].tag, "and", curPattern[patIdx].tag, "are siblings.")
+#         #print("Both have parent", whatparents[patIdx-1].tag)
+#         if a.find(".//" + curPattern[patIdx].tag) is None:# there is not a match
+#             #print("No Match. Restart.")
+#             patIdx = 0
+#             patlevelIdx = 0
+#         else:
+#             #print("Match")
+#             patIdx +=1
+#             # patlevelIdx <- leave alone because it is a sibling
+#     else:
+#         #print("Error?!! D:")
+#         patIdx = 0
+#
+# def examinefamily2(a,v):
+#     global patIdx
+#
+#     #print(whatsiblings[patIdx-1])
+#     #print(curPattern[patIdx-1])
+#     if whatparents[patIdx-1].tag == curPattern[patIdx-1].tag: #check for parent
+#         #print("Future: Parent is", whatparents[patIdx-1].tag, "and child is", curPattern[patIdx].tag)
+#         if v.find(".//" + curPattern[patIdx].tag) is None:# there is not a match
+#             #print("Future: no Match. Restart.")
+#             patIdx = 0
+#        # else:
+#             #print("Future: Match")
+#     elif curPattern[patIdx-1] in whatsiblings[patIdx-1]:
+#         #print("GREAT")
+#         #print("Future:", curPattern[patIdx-1].tag, "and", curPattern[patIdx].tag, "are siblings with parent", whatparents[patIdx-1].tag)
+#         if a.find("./" + curPattern[patIdx].tag) is None: # Note: this only finds immediate siblings
+#             #print("Future: No Match. Restart.")
+#             patIdx = 0
+#         #else:
+#             #print("Future: Match")
+#     else:
+#         #print("Future Error D:")
+#         patIdx = 0
 
 #for child in x:
     #b = ""
