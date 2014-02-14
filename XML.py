@@ -3,8 +3,11 @@ from xml.etree.ElementTree import Element, fromstring
 #tree = ET.parse('ElementTree.xml')
 #root = tree.getroot()
 
-def xml_read():
-    s = "<xml>" + "".join(open("ElementTree.xml")) + "</xml>"
+def xml_read(filename): #str):
+
+  #  s = "<xml>" + str + "</xml>"
+    s = "<xml>" + "".join(filename) + "</xml>"
+    type(s)
     assert(type(s) is str)
     x = fromstring(s)
     return x
@@ -92,8 +95,8 @@ def xml_print(globals1):
     print(str(len(globals1.hitList)))
     print(str(globals1.hitList))
 
-def xml_run(filename):
-    xmltree = xml_read()
+def xml_solve(filename):
+    xmltree = xml_read(filename)
     globals1 = StoreGlob1(xmltree)
     xml_findPattern(globals1,xmltree[-1])
     globals2 = StoreGlob2()
@@ -101,7 +104,6 @@ def xml_run(filename):
     globals2.hitList.pop(-1) # remove pattern since traverse picks it up
     xml_print(globals2)
 
-xml_run("ElementTree.xml")
 
 
 
