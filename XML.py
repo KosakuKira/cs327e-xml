@@ -5,73 +5,106 @@ from xml.etree.ElementTree import Element, fromstring
 
 s = "<xml>" + "".join(open("ElementTree.xml")) + "</xml>"
 assert(type(s) is str)
-# print(s)
-#print()
 
 x = fromstring(s)
 # assert(type(x) is Element)
 
+startPatTag = x[-1] # first element of pattern
+curPattern = [x[-1]]
+whatparents = [] # should consider a whatsibling var
+whatsiblings = []
+
+print("\n")
+# TODO: Make list of list of siblings
+counter = 0
+
+def findPattern(x):
+    global whatparents
+    global whatsiblings
+    global counter
+    for child in x:
+        curPattern.append(child)
+        whatparents.append(x)
+        counter += 1
+        list = x.findall("./*")
+        whatsiblings.append(list) #all xs children)
+        findPattern(child)
+
+findPattern(x[-1]) # grab full pattern
+
+print("What parents?")
+print(whatparents)
+print("What siblings?")
+print(whatsiblings)
+#content = whatsiblings[0]
+#print(content[0])
+print("\n")
+
 #print(x.findall("./Team/Cooly"))
 #print(x.findall("./THU/Team/ACRush"))
+# print(curPattern[0].findall(".//*")) #finds all that are children or grandchildren
+# print(curPattern[1].findall(".//" + curPattern[2].tag) != [])#sibling finder
 
-startPatTag = x[-1] # first element of pattern
-tagList = [x[-1]]
-
-print (startPatTag)
-print (startPatTag.find("Cooly"))
-print (startPatTag.find("Amber"))
-print ("Let's have some fun")
-print (startPatTag)
-print (startPatTag.find("./Cooly"))
-print (startPatTag.find("./Cooly/Amber"))
-
-print (startPatTag.find("Disney")) #Should return none
-#print (startPatTag.findall(".//"))
-print("Blackalicious")
-
-
-
-print()
-
-print (x)
-print("Rhythm Sticksssss")
-print()
-#numchild = []
-
-def tagFill(x):
- #   global numchild
-  #  numchild.append(len(x)) # last one will be 0
-
-   for child in x:
-        tagList.append(child)
-
-     #   numchild.append
-        tagFill(child)
-
-tagFill(x[-1]) # grab full pattern
-
-print()
-print(tagList)
-print("Hey ese...")
-print("You loco??")
-print()
-
-# print(tagList[0].tag)
-# print(tagList[0].findall(".//*")) #finds all that are children or grandchildren
-# print(tagList[0].findall(".//" + tagList[1].tag)) #finds all that are children or grandchildren
-# print(tagList[1].findall(".//" + tagList[2].tag) != [])#sibling finder
-
-
-# print(numchild) # structure of pattern
+#print(curPattern[0].tag)
+#print(curPattern[1].tag, whatparents[0].tag)
+#print(curPattern[2].tag, whatparents[1].tag)
+#print(curPattern[3].tag, whatparents[2].tag)
+#print(curPattern[4].tag, whatparents[3].tag)
+#print(curPattern[0].tag) # test for 3 that it's working
+#print(curPattern[1].tag)
+#print(curPattern[2].tag)
+# print("--------------------------------------------")
 
 hits = 0
 hitList = []
-
 patIdx = 0
-#print(type(tagList[0]))
-#print(tagList[0].tag) # test for 3 that it's working
-#print(tagList[1].tag)
-#print(tagList[2].tag)
+
+def examinefamily(a,v):
+    global patIdx
+    print("What siblings")
+  #  test = whatsiblings[patIdx-1]
+
+    if whatparents[patIdx-1].tag == curPattern[patIdx-1].tag: #check for parent
+        print("Parent is", whatparents[patIdx-1].tag, "and child is", curPattern[patIdx].tag)
+        if a.find(".//" + curPattern[patIdx].tag) is None: # there is not a match
+            print("No Match. Restart.")
+            patIdx = 0
+        else:
+            print("Match.")
+            patIdx += 1
+    elif curPattern[patIdx-1] in whatsiblings[patIdx-1]:
+        print(curPattern[patIdx-1].tag, "and", curPattern[patIdx].tag, "are siblings.")
+        print("Both have parent", whatparents[patIdx-1].tag)
+        if a.find(".//" + curPattern[patIdx].tag) is None:# there is not a match
+            print("No Match. Restart.")
+            patIdx = 0
+        else:
+            print("Match")
+            patIdx +=1
+    else:
+        print("Error?!! D:")
+        patIdx = 0
+
+def examinefamily2(a,v):
+    global patIdx
+    if whatparents[patIdx-1].tag == curPattern[patIdx-1].tag: #check for parent
+        print("Future: Parent is", whatparents[patIdx-1].tag, "and child is", curPattern[patIdx].tag)
+        if v.find(".//" + curPattern[patIdx].tag) is None:# there is not a match
+            print("Future: no Match. Restart.")
+            patIdx = 0
+        else:
+            print("Future: Match")
+    elif curPattern[patIdx-1] in whatsiblings[patIdx-1]:
+        print("GREAT")
+        print("Future:", curPattern[patIdx-1].tag, "and", curPattern[patIdx].tag, "are siblings with parent", whatparents[patIdx-1].tag)
+        if a.find("./" + curPattern[patIdx].tag) is None: # Note: this only finds immediate siblings
+            print("Future: No Match. Restart.")
+            patIdx = 0
+        else:
+            print("Future: Match")
+    else:
+        print("Future Error D:")
+        patIdx = 0
 
 def traverse (a, d = "") :
     assert(a != None)
@@ -79,134 +112,34 @@ def traverse (a, d = "") :
     global hitIdx
     global patIdx
     global hitList
-    global occurs
 
     print(d + a.tag)
     hits += 1
 
-    #indexCatcher = []
-    #firstIndex = []
+    assert(len(curPattern) > 0)
 
-    #assert(len(tagList) > 0)
     for v in a:
-        if patIdx == len(tagList):
-            hitList.append(hitIdx)
-            patIdx = 0
-            print("Pattern COMPREET")
-            #Pattern was found because patIdx == length of pattern
-            #Store the index of the first tag in the pattern
-            #patIdx has to be reset to avoid errors.
-            #This is done before any sort of searching or deeper traversal
-            #Since traverse will keep returning to the first if statement
-            #This conditional will check, BEFORE any searching is made
-            #if this is true
-        if (v.tag == startPatTag.tag):
-            #v.tag is the first tag in the pattern.
-            print("found", v.tag, "tag")
-            print("Let's get down to business!")
+        if patIdx == 0 and v.tag == curPattern[patIdx].tag: # does the traversed tag match the pattern?
+            print("Matched", curPattern[patIdx].tag, "tag. Found root.")
             hitIdx = hits
             patIdx += 1
 
+        elif patIdx < len(curPattern)-1 and v.tag == curPattern[patIdx].tag: # matches a tag after first
+            # print("Matched", curPattern[patIdx].tag, "tag...")
+            examinefamily(a,v)
+            examinefamily2(a,v)
 
-
-
-            #patIdx += 1
-
-            #if (v.find(".//" + startPatTag.find()) is None):
-             #   print("but", tagList[patIdx].tag, "is not under it 1")
-              #  patIdx = 0
-        elif (startPatTag.find(v.tag) is not None):
-            #v.tag is not the first tag in the pattern
-            #v.tag is the first tag's child.
-            print("found child tag: ", v.tag)
-            patIdx += 1
-            print("To defeat, the Huns!")
-
-        elif (startPatTag.findall(".//" + v.tag) != []):
-            #v.tag is not the first tag in the pattern.
-            #v.tag is not the first tag's child.
-            #v.tag is a confirmed DESCENDANT of the first tag.
-            patIdx += 1
-            print("found descendant tag:", v.tag)
-            print("You're the saddest bunch I've ever met")
-        else:
-            #v.tag is not the first tag in the pattern.
-            #v.tag is not the first tag's child.
-            #v.tag is not a confirmed DESCENDANT of the first tag.
-            #Stop looking.
-
+        elif patIdx == len(curPattern)-1 and v.tag == curPattern[patIdx].tag:
+           # print(numchild[patIdx - 1])
+            examinefamily(a,v)
+            print("Wow, found", curPattern[patIdx-1].tag, "end tag, saving...")
 
             patIdx = 0
-            print("Pattern NO GOODE")
-            #Pattern was not found.
-            #patIdx must be reset anyway.
-            #If we got here,
-            #It probably means that the search
-            #Did not yield the complete pattern.
+            hitList.append(hitIdx)
 
-            print(v.tag + " doesn't exist.")
-            print("GET OUTTA THERE!")
-            print()
-        #elif patIdx < len(tagList)-1 and v.tag == tagList[patIdx].tag:
-         #   print("found", tagList[patIdx].tag, "tag")
-            # print(numchild[patIdx-1])
-          #  patIdx += 1
-           # print("comparing",  tagList[patIdx-1].tag, "and", tagList[patIdx].tag)
-
-            #if tagList[patIdx-1].findall(".//" + tagList[patIdx].tag) == []: # if empty, not parent
-             #   print(tagList[patIdx].tag, "We are looking for a sibling!")
-              #  if (v.find(".//" + tagList[patIdx].tag) is None):   # if not a sibling
-               #     print("but", tagList[patIdx].tag, "is not a sibling")
-                #    patIdx = 0
-                #if a.findall(".//" + tagList[patIdx].tag) != []: # found a sibling!
-                 #   print(tagList[patIdx].tag, "<- sibling!")
-                #else:
-                 #   patIdx = 0
-                #  do sibling things
-                # a.find(".//" + tagList[patIdx].tag)
-
-            #elif (v.find(".//" + tagList[patIdx].tag) is None):   # if not a sibling
-             #   print("but", tagList[patIdx].tag, "is not under it 2")
-              #  patIdx = 0
-
-               # if a.find(".//" + tagList[patIdx].tag) is None and tagList[patIdx].find(".//" + tagList[patIdx].tag):
-               #     print("and", tagList[patIdx].tag, "is not beside it")
-               #     patIdx = 0
-
-        #elif patIdx == len(tagList)-1 and v.tag == tagList[patIdx].tag:
-           # print(numchild[patIdx - 1])
-         #   print("found", tagList[patIdx].tag, "end tag, saving...")
-          #  patIdx = 0
-           # hitList.append(hitIdx)
-
-        #indexCatcher.append(hits)
-        #if (patIdx < len(tagList)):
-           # hitList.append(hits)
-        #patIdx += 1
-#        hitList.append(hits)
-    #else:
-     #   patIdx = 0
-
-        #firstIndex.append(indexCatcher[0])
-        #indexCatcher = []
-        #hitList.append(hits)
-
-    #if hits == 1:
-     #   occurs += 1
-        #hits += 1
-        #if (v.tag == check1):
-            #occurs += 1
-            #hitList.append(hits)
-        #if (v.tag == check1):
-         #   hits += 1
-        #elif (a.tag == check2):
-            #hits += 1
-
-        #if hits == 1:
-         #   occurs += 1
         traverse(v, d + "\t")
 
-   # print(d + "/" + a.tag)
+  #  print(d + "/" + a.tag)
 traverse(x)
 
 print()
@@ -216,40 +149,52 @@ print("The Grand finale!")
 print("Count: " + str(len(hitList)))
 print("Hit indices: " + str(hitList))
 
-# Previous Attempts:
+            #    # if a.find(".//" + curPattern[patIdx].tag) is None and curPattern[patIdx].find(".//" + curPattern[patIdx].tag):
+            #    #     print("and", curPattern[patIdx].tag, "is not beside it")
+            #    #     patIdx = 0
+
+
+        #            if (v.find(".//" + curPattern[patIdx].tag) is None):
+#                print("but", curPattern[patIdx].tag, "is not under it 1")
+#                patIdx = 0
+
+
+
+############
+##  Previous Attempts:
 
 #for child in x:
     #b = ""
     #Remains of old algorithm below
     #Algorithm was naive and unsuccessful
 
-    #if(child.tag is not tagList[0].tag):
+    #if(child.tag is not curPattern[0].tag):
      #   print(child.tag)
-      #  print(tagList[0].tag)
+      #  print(curPattern[0].tag)
        # print("Something A")
         #print()
 
     #print(child.tag)
     #print("This is child: " + str(child.tag))
-    # print(child.find(tagList[0].tag))
-    #if (child.find(tagList[0].tag) is None):
+    # print(child.find(curPattern[0].tag))
+    #if (child.find(curPattern[0].tag) is None):
      #   print(child.tag)
-      #  print(tagList[0].tag)
-        #print(child.find(tagList[0].tag))
+      #  print(curPattern[0].tag)
+        #print(child.find(curPattern[0].tag))
        # print("Something B")
         #print()
 
-    #print ("Birde: " + str(child.find(tagList[0].tag)))
-    #if (child.tag is not tagList[0].tag) and (child.find(tagList[0].tag) is None):
-     #   print(child.find(tagList[0].tag))
+    #print ("Birde: " + str(child.find(curPattern[0].tag)))
+    #if (child.tag is not curPattern[0].tag) and (child.find(curPattern[0].tag) is None):
+     #   print(child.find(curPattern[0].tag))
       #  print("Doge")
        # b = 1
         # Junk code.
         # First tag in pattern is obviously not here.
     #else:
      #   a = 2
-      #  newChild = child.find(tagList[0].tag)
-       # newCheck = newChild.find(tagList[1].tag)
+      #  newChild = child.find(curPattern[0].tag)
+       # newCheck = newChild.find(curPattern[1].tag)
         #if (newCheck is None):
          #   print("Such plot")
           #  c = 3
