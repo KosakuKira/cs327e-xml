@@ -4,33 +4,34 @@
     </Team>
     <JiaJia>
 		<Team>
-			<Cooly><Amber></Amber></Cooly>
-		</Team>
+            <Parent>
+                    <Child>
+                        <Grandchild2>
+                            <GreatGrandchild1>
+                            </GreatGrandchild1>
+                            <UNRELATED>
 
+                            </UNRELATED>
+                        </Grandchild2>
+                        <Grandchild1>
+                        </Grandchild1>
+                    </Child>
+            </Parent>
+        </Team>
 	</JiaJia>
-    <Parent>
-        <Child1>
+    <Team>
+			<Amber></Amber>
+            <Cooly></Cooly>
+	</Team>
+</THU>
+
+<Parent>
+        <Child>
             <Grandchild2>
                 <GreatGrandchild1>
                 </GreatGrandchild1>
             </Grandchild2>
             <Grandchild1>
             </Grandchild1>
-        </Child1>
-    </Parent>
-    <Downing>
-			<Amber></Amber>
-            <Cooly></Cooly>
-	</Downing>
-</THU>
-
-<Parent>
-    <Child1>
-        <Grandchild2>
-            <GreatGrandchild1>
-            </GreatGrandchild1>
-        </Grandchild2>
-        <Grandchild1>
-        </Grandchild1>
-    </Child1>
+        </Child>
 </Parent>
