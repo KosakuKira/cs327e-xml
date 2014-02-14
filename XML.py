@@ -26,10 +26,8 @@ def findPattern(x):
         curPattern.append(child)
         whatparents.append(x)
         counter += 1
-        list = x.findall("./*")
-        whatsiblings.append(list) #all xs children)
+        whatsiblings.append(x.findall("./*")) #all xs children)
         findPattern(child)
-
 findPattern(x[-1]) # grab full pattern
 
 print("What parents?")
@@ -58,10 +56,12 @@ print("\n")
 hits = 0
 hitList = []
 patIdx = 0
+levelIdx = 0
 
 def examinefamily(a,v):
     global patIdx
-    print("What siblings")
+    global levelIdx # what sub level in the pattern are you at
+    print(levelIdx)
   #  test = whatsiblings[patIdx-1]
 
     if whatparents[patIdx-1].tag == curPattern[patIdx-1].tag: #check for parent
@@ -69,24 +69,31 @@ def examinefamily(a,v):
         if a.find(".//" + curPattern[patIdx].tag) is None: # there is not a match
             print("No Match. Restart.")
             patIdx = 0
+            levelIdx = 0
         else:
             print("Match.")
             patIdx += 1
+            levelIdx +=1
     elif curPattern[patIdx-1] in whatsiblings[patIdx-1]:
         print(curPattern[patIdx-1].tag, "and", curPattern[patIdx].tag, "are siblings.")
         print("Both have parent", whatparents[patIdx-1].tag)
         if a.find(".//" + curPattern[patIdx].tag) is None:# there is not a match
             print("No Match. Restart.")
             patIdx = 0
+            levelIdx = 0
         else:
             print("Match")
             patIdx +=1
+            # levelIdx <- leave alone because it is a sibling
     else:
         print("Error?!! D:")
         patIdx = 0
 
 def examinefamily2(a,v):
     global patIdx
+
+    print(whatsiblings[patIdx-1])
+    print(curPattern[patIdx-1])
     if whatparents[patIdx-1].tag == curPattern[patIdx-1].tag: #check for parent
         print("Future: Parent is", whatparents[patIdx-1].tag, "and child is", curPattern[patIdx].tag)
         if v.find(".//" + curPattern[patIdx].tag) is None:# there is not a match
@@ -112,6 +119,7 @@ def traverse (a, d = "") :
     global hitIdx
     global patIdx
     global hitList
+    global levelIdx
 
     print(d + a.tag)
     hits += 1
