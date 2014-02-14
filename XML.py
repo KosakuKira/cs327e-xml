@@ -12,11 +12,11 @@ x = fromstring(s)
 startPatTag = x[-1] # first element of pattern
 curPattern = [x[-1]]
 whatparents = [] # should consider a whatsibling var
-whatsiblings = []
+whatsiblings = [x[1]]
 
-print("\n")
 # TODO: Make list of list of siblings
 counter = 0
+print("\n")
 
 def findPattern(x):
     global whatparents
@@ -26,7 +26,8 @@ def findPattern(x):
         curPattern.append(child)
         whatparents.append(x)
         counter += 1
-        whatsiblings.append(x.findall("./*")) #all xs children)
+        if child is x[-1]:
+            whatsiblings.append(x.findall("./*")) #all xs children)
         findPattern(child)
 findPattern(x[-1]) # grab full pattern
 
