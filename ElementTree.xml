@@ -1,26 +1,19 @@
 <THU>
-	<Team>
-		<Cooly></Cooly>
-	</Team>
-
-	<JiaJia>
+    <Team>
+        <Cooly><Sir><woo></woo></Sir></Cooly>
+    </Team>
+    <JiaJia>
 		<Team>
-			<Cooly>
-                <Amber></Amber>
-            </Cooly>
+			<Cooly><Amber></Amber></Cooly>
 		</Team>
 	</JiaJia>
     <Team>
-
+			<Amber></Amber>
             <Cooly></Cooly>
 	</Team>
-    <No>
-        <Team>
-            <Cooly>
-                <Amber></Amber>
-            </Cooly>
-        </Team>
-    </No>
 </THU>
 
-<Team><Cooly><Amber></Amber></Cooly></Team>
+<Team>
+    <Cooly></Cooly>
+    <Sir><woo></woo></Sir>
+</Team>
