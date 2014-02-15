@@ -8,26 +8,8 @@
 		<Team>
 			<Ahyangyi></Ahyangyi>
 			<Dragon></Dragon>
-			<Cooly>
-				<Amber>
-					<Team>
-						<Ahyangyi></Ahyangyi>
-						<Dragon></Dragon>
-						<Cooly>
-							<Amber>
-								<Team>
-									<Ahyangyi></Ahyangyi>
-									<Dragon></Dragon>
-									<Cooly>
-										<Amber></Amber>
-									</Cooly>
-								</Team>
-							</Amber>
-						</Cooly>
-					</Team>
-				</Amber>
-			</Cooly>
+			<Cooly><Amber></Amber></Cooly>
 		</Team>
 	</JiaJia>
 </THU>
-<Team><Ahyangyi></Ahyangyi><Dragon></Dragon><Cooly><Amber></Amber></Cooly></Team>
+<Team><Cooly></Cooly></Team>

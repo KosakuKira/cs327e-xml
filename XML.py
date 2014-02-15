@@ -5,7 +5,7 @@ from xml.etree.ElementTree import Element, fromstring
 
 def xml_read(filename): #str):
     #  s = "<xml>" + str + "</xml>"
-    s = "<xml>" + "".join(open(filename)) + "</xml>"
+    s = "<xml>" + "".join(filename) + "</xml>"
     type(s)
     assert(type(s) is str)
     x = fromstring(s)
@@ -103,7 +103,7 @@ def xml_solve(filename):
     globals2.hitList.pop(-1) # remove pattern since traverse picks it up
     xml_print(globals2)
 
-xml_solve("ElementTree.xml")
+# xml_solve("ElementTree.xml")
 
 
 
