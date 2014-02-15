@@ -1,46 +1,33 @@
 <THU>
-    <Team>
-        <Cooly><Sir><woo></woo></Sir></Cooly>
-    </Team>
-    <JiaJia>
-		<Team>
-            <Parent>
-                    <Child>
-                        <Grandchild2>
-                            <GreatGrandchild1>
-                            </GreatGrandchild1>
-                            <UNRELATED>
-                            </UNRELATED>
-                        </Grandchild2>
-                        <Grandchild1>
-                        </Grandchild1>
-                    </Child>
-            </Parent>
-        </Team>
-	</JiaJia>
-    <Team>
-			<Amber></Amber>
-        <Parent>
-        <Child>
-            <Grandchild2>
-                <GreatGrandchild1>
-                </GreatGrandchild1>
-            </Grandchild2>
-            <Grandchild1>
-            </Grandchild1>
-        </Child>
-    </Parent>
-            <Cooly></Cooly>
+	<Team>
+		<ACRush></ACRush>
+		<Jelly></Jelly>
+		<Cooly></Cooly>
 	</Team>
+	<JiaJia>
+		<Team>
+			<Ahyangyi></Ahyangyi>
+			<Dragon></Dragon>
+			<Cooly>
+				<Amber>
+					<Team>
+						<Ahyangyi></Ahyangyi>
+						<Dragon></Dragon>
+						<Cooly>
+							<Amber>
+								<Team>
+									<Ahyangyi></Ahyangyi>
+									<Dragon></Dragon>
+									<Cooly>
+										<Amber></Amber>
+									</Cooly>
+								</Team>
+							</Amber>
+						</Cooly>
+					</Team>
+				</Amber>
+			</Cooly>
+		</Team>
+	</JiaJia>
 </THU>
-
-<Parent>
-        <Child>
-            <Grandchild2>
-                <GreatGrandchild1>
-                </GreatGrandchild1>
-            </Grandchild2>
-            <Grandchild1>
-            </Grandchild1>
-        </Child>
-</Parent>
+<Team><Ahyangyi></Ahyangyi><Dragon></Dragon><Cooly><Amber></Amber></Cooly></Team>
