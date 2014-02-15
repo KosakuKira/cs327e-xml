@@ -3,10 +3,9 @@ from xml.etree.ElementTree import Element, fromstring
 #tree = ET.parse('ElementTree.xml')
 #root = tree.getroot()
 
-def xml_read(filename): #str):
-
-  #  s = "<xml>" + str + "</xml>"
-    s = "<xml>" + "".join(filename) + "</xml>"
+def xml_read(): #str):
+    #  s = "<xml>" + str + "</xml>"
+    s = "<xml>" + "".join(open("ElementTree.xml")) + "</xml>"
     type(s)
     assert(type(s) is str)
     x = fromstring(s)
@@ -84,7 +83,6 @@ def xml_traverse (globals1,globals2, a, d = "") :
             if globals1.whatparents[globals2.patIdx-1].tag is a.tag:
                 globals2.hitList.append(globals2.hitIdx)
             globals2.patIdx = 0
-            
             #print("Wow, found", curPattern[patIdx-1].tag, "end tag, saving...")
         xml_traverse(globals1,globals2,v, d + "\t")
   #  #print(d + "/" + a.tag)
@@ -92,11 +90,12 @@ def xml_traverse (globals1,globals2, a, d = "") :
 #print()
 def xml_print(globals1):
     #print("The Grand finale!")
-    print(str(len(globals1.hitList)))
-    print(str(globals1.hitList))
+    print(len(globals1.hitList))
+    for hit in globals1.hitList:
+        print(hit)
 
-def xml_solve(filename):
-    xmltree = xml_read(filename)
+def xml_solve():
+    xmltree = xml_read()
     globals1 = StoreGlob1(xmltree)
     xml_findPattern(globals1,xmltree[-1])
     globals2 = StoreGlob2()
@@ -104,10 +103,7 @@ def xml_solve(filename):
     globals2.hitList.pop(-1) # remove pattern since traverse picks it up
     xml_print(globals2)
 
-
-
-
-
+xml_solve()
 
 
 
