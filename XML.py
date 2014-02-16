@@ -2,27 +2,39 @@ from xml.etree.ElementTree import Element, fromstring
 
 def xml_read(filename):
     """
-    Reads from the XML
+    Reads from the XML file.
+    filename is the XML file.
     """
     s = "<xml>" + "".join(open(filename)) + "</xml>"
     type(s)
     assert(type(s) is str)
     x = fromstring(s)
     return x
-class StoreGlob1():   # Store globals. everytime you call, it reinitializes
+class StoreGlob1():
+    """
+    Store globals
+    Everytime you call, it reinitializes
+    """
     def __init__(self,x):
         self.curPattern = [x[-1]]
         self.PatCount = 0
         self.whatparents = []
 
 def xml_findPattern(globals1,x):
+    """
+    Finds the pattern and stores it
+    """
     for child in x:
         globals1.curPattern.append(child)
         globals1.whatparents.append(x)
         globals1.PatCount += 1
         xml_findPattern(globals1, child)
 
-class StoreGlob2():   # Store globals. everytime you call, it reinitializes
+class StoreGlob2():
+    """
+    Store globals
+    Everytime you call, it reinitializes
+    """
     def __init__(self):
         self.hits = 0
         self.hitIdx = 0
@@ -30,6 +42,10 @@ class StoreGlob2():   # Store globals. everytime you call, it reinitializes
         self.patIdx = 0
 
 def xml_traverse (globals1,globals2, a, d = "") :
+    """
+    Modified version of Downing's traverse()
+    Made to work with program
+    """
     assert(a != None)
     globals2.hits += 1
     assert(len(globals1.curPattern) > 0)
@@ -50,14 +66,25 @@ def xml_traverse (globals1,globals2, a, d = "") :
             globals2.patIdx = 0
 
         xml_traverse(globals1,globals2,v, d + "\t")
-  #  #print(d + "/" + a.tag)
+   #print(d + "/" + a.tag)
 def xml_print(globals1):
-    #print("The Grand finale!")
+    """
+    Helper function
+    Prints the occurrences
+    And the indices
+    
+    Not to be used alone
+    But used with xml_solve()
+    """
+
     print(len(globals1.hitList))
     for hit in globals1.hitList:
         print(hit)
 
 def xml_solve(filename):
+    """
+    Runs the entire operation.
+    """
     xmltree = xml_read(filename)
     # print(xmltree.findall(".//*"))
     globals1 = StoreGlob1(xmltree)
