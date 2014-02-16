@@ -4,63 +4,63 @@
 # imports
 #----------
 
-import io
 import unittest
+import io
+import XML
+
+from xml.etree.ElementTree import Element, tostring, fromstring
 from XML import xml_read, xml_findPattern, StoreGlob1, StoreGlob2
+
+
 
 #----------
 # xml_test
 #----------
-
 class TestXML(unittest.TestCase) :
     #-------------
     #
     #-------------
     def test1_read(self):
-       # r = io.stringIO"<xml></xml>")
-        xml_read()
+        r = "<xml><THU><Team><ACRush><Ahyangyi><akid></akid></Ahyangyi><Dragon></Dragon><cat></cat></ACRush><Jelly></Jelly><Cooly></Cooly></Team></THU><Team><Ahyangyi><akid></akid></Ahyangyi><Dragon></Dragon><cat></cat></Team></xml>"
+        rtest = fromstring(r)
+        totest = xml_read("ElementTree.xml")
+        self.assertTrue(rtest.tag == totest.tag)
 
     def test2_read(self):
-        r = xml_read()
+        r = "<xml><THU><Team><ACRush><Ahyangyi><akid></akid></Ahyangyi><Dragon></Dragon><cat></cat></ACRush><Jelly></Jelly><Cooly></Cooly></Team></THU><Team><Ahyangyi><akid></akid></Ahyangyi><Dragon></Dragon><cat></cat></Team></xml>"
+        rtest = fromstring(r)
+        totest = xml_read("ElementTree.xml")
+        self.assertTrue(rtest.find("THU").tag == "THU")
 
     def test3_read(self):
-        r = xml_read()
+        r = "<xml><THU><Team><ACRush><Ahyangyi><akid></akid></Ahyangyi><Dragon></Dragon><cat></cat></ACRush><Jelly></Jelly><Cooly></Cooly></Team></THU><Team><Ahyangyi><akid></akid></Ahyangyi><Dragon></Dragon><cat></cat></Team></xml>"
+        rtest = fromstring(r)
+        totest = xml_read("ElementTree.xml")
+        print(totest)
+        print("Something")
+        self.assertTrue(totest.find(".//akid").tag == "akid")
 
-    def test1_findPattern(self):
-        xmltree = xml_read(ElementTree.xml)
-        globals1 = StoreGlob1(xmltree)
-        xml_findPattern(globals1,xmltree[-1])
-        p = xml_findPattern()
+    #def test2_read(self):
+        # check the direct children. are the children of one in the other?
 
-    def test2_findPattern(self):
-        p = xml_findPattern()
+    def test1_findPattern(self): # Verify that a list is being returned
+        xmltree = "<xml><outer><middle><inner></inner></middle></outer></xml>"
+        globals1 = StoreGlob1(fromstring(xmltree))
+        pattern = xml_findPattern(globals1,fromstring(xmltree))
+        self.assertTrue(type(pattern) is list)
 
-    def test3_findPattern(self):
-        p = xml_findPattern()
+    def test2_findPattern(self): # Verify correct number of elements
+        xmltree = "<xml><outer><middle><inner></inner></middle></outer></xml>"
+        globals1 = StoreGlob1(fromstring(xmltree))
+        pattern = xml_findPattern(globals1,fromstring(xmltree))
+        self.assertTrue(len(pattern) == 4)
 
-    def test1_traverse(self):
-        # r =
+    def test3_findPattern(self): # Verify that 2nd element is correct
+        xmltree = "<xml><outer><middle><inner></inner></middle></outer></xml>"
+        globals1 = StoreGlob1(fromstring(xmltree))
+        pattern = xml_findPattern(globals1,fromstring(xmltree))
+        testelement = fromstring("<middle></middle>")
+        self.assertTrue(pattern[2].tag == testelement.tag)
 
-    def test2_traverse(self):
-        # r =
 
-    def test3_traverse(self):
-        # r =
-
-    def test1_print(self):
-        # r =
-
-    def test2_print(self):
-        # r =
-
-    def test3_print(self):
-        # r =
-
-    def test1_solve(self):
-        # r =
-
-    def test2_solve(self):
-        # r =
-
-    def test3_solve(self):
-        # r =
+unittest.main()
