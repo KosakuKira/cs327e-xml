@@ -9,7 +9,7 @@ import io
 import XML
 
 from xml.etree.ElementTree import Element, tostring, fromstring
-from XML import xml_read, xml_findPattern, StoreGlob1, StoreGlob2
+from XML import xml_read, xml_findPattern, StoreGlob1, StoreGlob2, xml_print, xml_solve, xml_traverse
 
 
 
@@ -29,6 +29,7 @@ class TestXML(unittest.TestCase) :
     def test2_read(self):
         r = "<xml><THU><Team><ACRush><Ahyangyi><akid></akid></Ahyangyi><Dragon></Dragon><cat></cat></ACRush><Jelly></Jelly><Cooly></Cooly></Team></THU><Team><Ahyangyi><akid></akid></Ahyangyi><Dragon></Dragon><cat></cat></Team></xml>"
         rtest = fromstring(r)
+
         totest = xml_read("ElementTree.xml")
         self.assertTrue(rtest.find("THU").tag == "THU")
 
@@ -36,12 +37,6 @@ class TestXML(unittest.TestCase) :
         r = "<xml><THU><Team><ACRush><Ahyangyi><akid></akid></Ahyangyi><Dragon></Dragon><cat></cat></ACRush><Jelly></Jelly><Cooly></Cooly></Team></THU><Team><Ahyangyi><akid></akid></Ahyangyi><Dragon></Dragon><cat></cat></Team></xml>"
         rtest = fromstring(r)
         totest = xml_read("ElementTree.xml")
-        print(totest)
-
-        print("Something")
-        print(totest.find(".//akid"))
-        print(totest.findall(".//akid"))
-        print("Snooooooooooooooooop")
         self.assertTrue(totest.find(".//akid").tag == "akid")
 
     def test1_findPattern(self): # Verify that a list is being returned
@@ -65,6 +60,7 @@ class TestXML(unittest.TestCase) :
         pattern = globals1.curPattern
         testelement = fromstring("<middle></middle>")
         self.assertTrue(pattern[2].tag == testelement.tag)
+
 
 
 unittest.main()
