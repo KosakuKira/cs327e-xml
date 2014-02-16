@@ -37,7 +37,11 @@ class TestXML(unittest.TestCase) :
         rtest = fromstring(r)
         totest = xml_read("ElementTree.xml")
         print(totest)
+
         print("Something")
+        print(totest.find(".//akid"))
+        print(totest.findall(".//akid"))
+        print("Snooooooooooooooooop")
         self.assertTrue(totest.find(".//akid").tag == "akid")
 
     def test1_findPattern(self): # Verify that a list is being returned
