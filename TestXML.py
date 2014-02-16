@@ -40,25 +40,25 @@ class TestXML(unittest.TestCase) :
         print("Something")
         self.assertTrue(totest.find(".//akid").tag == "akid")
 
-    #def test2_read(self):
-        # check the direct children. are the children of one in the other?
-
     def test1_findPattern(self): # Verify that a list is being returned
         xmltree = "<xml><outer><middle><inner></inner></middle></outer></xml>"
         globals1 = StoreGlob1(fromstring(xmltree))
-        pattern = xml_findPattern(globals1,fromstring(xmltree))
+        xml_findPattern(globals1,fromstring(xmltree))
+        pattern = globals1.curPattern
         self.assertTrue(type(pattern) is list)
 
     def test2_findPattern(self): # Verify correct number of elements
         xmltree = "<xml><outer><middle><inner></inner></middle></outer></xml>"
         globals1 = StoreGlob1(fromstring(xmltree))
-        pattern = xml_findPattern(globals1,fromstring(xmltree))
+        xml_findPattern(globals1,fromstring(xmltree))
+        pattern = globals1.curPattern
         self.assertTrue(len(pattern) == 4)
 
     def test3_findPattern(self): # Verify that 2nd element is correct
         xmltree = "<xml><outer><middle><inner></inner></middle></outer></xml>"
         globals1 = StoreGlob1(fromstring(xmltree))
-        pattern = xml_findPattern(globals1,fromstring(xmltree))
+        xml_findPattern(globals1,fromstring(xmltree))
+        pattern = globals1.curPattern
         testelement = fromstring("<middle></middle>")
         self.assertTrue(pattern[2].tag == testelement.tag)
 
