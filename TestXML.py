@@ -62,5 +62,4 @@ class TestXML(unittest.TestCase) :
         self.assertTrue(pattern[2].tag == testelement.tag)
 
 
-
 unittest.main()

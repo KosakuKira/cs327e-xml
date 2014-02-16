@@ -72,7 +72,7 @@ def xml_print(globals1):
     Helper function
     Prints the occurrences
     And the indices
-    
+
     Not to be used alone
     But used with xml_solve()
     """
@@ -86,7 +86,6 @@ def xml_solve(filename):
     Runs the entire operation.
     """
     xmltree = xml_read(filename)
-    # print(xmltree.findall(".//*"))
     globals1 = StoreGlob1(xmltree)
     xml_findPattern(globals1,xmltree[-1])
     globals2 = StoreGlob2()
